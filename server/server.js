@@ -24,6 +24,9 @@ connectDB();
 const app = express();
 const server = http.createServer(app);
 
+// The app runs behind a reverse proxy in Render and in temporary tunnel demos.
+app.set('trust proxy', 1);
+
 // Socket.io setup
 const io = new Server(server, {
   cors: {
