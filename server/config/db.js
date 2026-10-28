@@ -20,11 +20,15 @@ const connectDB = async () => {
   } catch (error) {
     console.warn(`⚠️ Could not connect to local MongoDB (${error.message}).`);
 
-    // A configured remote database is required for deployed data to persist.
-    // Only use the in-memory database for local development without a URI.
-    if (process.env.NODE_ENV === 'production') {
+    // Production requires a persistent database unless this is an intentional
+    // temporary demo. Data in the in-memory fallback is lost on restart.
+    if (process.env.NODE_ENV === 'production' && process.env.ALLOW_IN_MEMORY_DB !== 'true') {
       console.error('❌ MongoDB connection failed. Check MONGODB_URI and network access.');
       process.exit(1);
+    }
+
+    if (process.env.ALLOW_IN_MEMORY_DB === 'true') {
+      console.warn('⚠️ ALLOW_IN_MEMORY_DB is enabled; database changes will be temporary.');
     }
 
     console.log('🔄 Initializing in-memory MongoDB fallback...');
