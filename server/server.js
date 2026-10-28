@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const http = require('http');
+const path = require('path');
 const { Server } = require('socket.io');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
@@ -117,11 +118,21 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Serve the React app from the same host in production.
+const clientBuildPath = path.join(__dirname, '../client/build');
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(clientBuildPath));
+}
+
 // Error handler
 app.use(errorHandler);
 
 // Handle unhandled routes
 app.use('*', (req, res) => {
+  if (process.env.NODE_ENV === 'production' && !req.originalUrl.startsWith('/api/')) {
+    return res.sendFile(path.join(clientBuildPath, 'index.html'));
+  }
+
   res.status(404).json({
     success: false,
     message: `Route ${req.originalUrl} not found`,

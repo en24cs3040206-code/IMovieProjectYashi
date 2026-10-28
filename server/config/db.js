@@ -19,6 +19,14 @@ const connectDB = async () => {
     }
   } catch (error) {
     console.warn(`⚠️ Could not connect to local MongoDB (${error.message}).`);
+
+    // A configured remote database is required for deployed data to persist.
+    // Only use the in-memory database for local development without a URI.
+    if (process.env.NODE_ENV === 'production') {
+      console.error('❌ MongoDB connection failed. Check MONGODB_URI and network access.');
+      process.exit(1);
+    }
+
     console.log('🔄 Initializing in-memory MongoDB fallback...');
 
     try {
