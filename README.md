@@ -4,6 +4,12 @@
 
 IMovies is a modern, responsive online cinema platform designed to deliver a smooth and engaging movie ticket booking experience. Users can browse movies, select showtimes, reserve seats with real-time availability tracking, make simulated payments, and manage bookings. Administrators have access to a dashboard to manage movies, theatres, show schedules, and view revenue analytics.
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/en24cs3040206-code/IMovieProjectYashi)
+
+## Deploy for a demo
+
+Use the button above or create a Blueprint in Render and select this repository. The setup reads [`render.yaml`](render.yaml) and creates one web service for the React app and API. Create a MongoDB Atlas database first, then provide its connection string as `MONGODB_URI` when Render prompts for it. See [DEPLOYMENT.md](DEPLOYMENT.md) for the full steps and free-tier notes.
+
 ---
 
 ## 🚀 Key Features
@@ -119,15 +125,15 @@ IMovies/
 
 ### 2. Backend Setup
 ```bash
-cd IMovies/server
+cd server
 npm install
 npm start
 ```
-The server will start on port `5000` (`http://localhost:5000`).
+The server defaults to port `5000` (`http://localhost:5000`). If you set `PORT` in `server/.env`, use that port instead.
 
 ### 3. Frontend Setup
 ```bash
-cd IMovies/client
+cd client
 npm install
 npm start
 ```
